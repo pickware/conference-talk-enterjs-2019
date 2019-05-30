@@ -8,8 +8,14 @@
         "eslint:fix": "eslint --fix ."
     },
     "devDependencies": {
+        "husky": "^2.3.0",
         "viison-style-guide": "git+https://github.com/VIISON/style-guide.git"
     },
     "author": "Jannik Jochem <jannik.jochem@pickware.de>, Niklas Buechner <niklas.buechner@pickware.de>",
-    "license": "MIT"
+    "license": "MIT",
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn run eslint"
+        }
+    }
 }
