@@ -31,7 +31,8 @@ ${name ? `Hello ${name} from ${serverName}!` : `Hello World from ${serverName}!`
 </html>
 `;
 
-app.get('/', (req, res) => res.send(indexTemplate()));
+// eslint-disable-next-line no-undef
+app.get('/', (req, res) => res.send(indexTemplte()));
 
 app.post('/', (req, res) => res.send(indexTemplate(req.body.name)));
 

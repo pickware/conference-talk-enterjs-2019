@@ -33,6 +33,7 @@ ${name ? `Hello ${name} from ${serverName}!` : `Hello World from ${serverName}!`
 
 app.get('/', (req, res) => res.send(indexTemplate()));
 
-app.post('/', (req, res) => res.send(indexTemplate(req.body.name)));
+// eslint-disable-next-line no-undef
+app.post('/', (req, res) => res.send(indexTemplte(req.body.name)));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

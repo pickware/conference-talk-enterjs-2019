@@ -9,6 +9,7 @@
         "express": "^4.17.1"
     },
     "scripts": {
-        "server": "node lib/main.js"
+        "server": "node lib/main.js",
+        "build-images": "node build/build-docker-images.js"
     }
 }
