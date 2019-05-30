@@ -1,0 +1,5 @@
+# Contrary to ESLint default behavior, we want .eslintrc.js and other JavaScript dotfiles to be linted as well
+!.*
+
+# Ignore node_modules in nested projects, too
+node_modules/
