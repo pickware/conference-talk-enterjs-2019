@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-application-deployment
+  labels:
+    app: example-application-app
+spec:
+  selector:
+    matchLabels:
+      app: example-application-pod
+  template:
+    metadata:
+      labels:
+        app: example-application-pod
+    spec:
+      containers:
+        - name: js-app
+          image: example-application:v2
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
