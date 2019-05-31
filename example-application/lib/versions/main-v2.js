@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 8080;
 const serverName = adjectiveAnimal.generateName();
+const version = process.env.VERSION || 'development';
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -17,9 +18,9 @@ const indexTemplate = name => `
 </head>
 
 <h1>
-${name ? `Hello ${name} from ${serverName}!` : `Hello World from ${serverName}!`}
+    ${name ? `Hello ${name}!` : 'Hello World!'}
 </h1>
-    
+
 <form method="post">
     <label>
         What's your name?
@@ -27,6 +28,10 @@ ${name ? `Hello ${name} from ${serverName}!` : `Hello World from ${serverName}!`
     </label>
     <input type="submit"/>
 </form>
+
+<p>
+    Server <em>${serverName}</em> running version <em>${version}</em>.
+</p>
 
 </html>
 `;

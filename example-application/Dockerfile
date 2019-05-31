@@ -7,8 +7,10 @@ COPY . ./
 RUN yarn install
 
 ARG MAIN_JS=./lib/main.js
-
 COPY $MAIN_JS ./lib/main.js
+
+ARG APP_VERSION=v1
+ENV VERSION=$APP_VERSION
 
 EXPOSE 8080
 
