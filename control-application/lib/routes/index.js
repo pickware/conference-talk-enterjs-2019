@@ -21,6 +21,11 @@ const indexTemplate = pods => `
     Deploy Application
 </button>
 
+<button
+    onclick="javascript:fetch('/create-blue-green-deployment', { method: 'POST' })">
+    Create Blue-Green-Deployment
+</button>
+
 <script type="text/javascript">
     setInterval(() => window.location.reload(), 1000);
 </script>

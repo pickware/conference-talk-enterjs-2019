@@ -9,6 +9,7 @@ const port = 8000;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', asyncHelper(require('./routes/index.js')));
+app.post('/create-blue-green-deployment', require('./routes/create-blue-green-deployment.js'));
 app.post('/default-deployment', asyncHelper(require('./routes/create-deployment.js')));
 
 // Error handler
