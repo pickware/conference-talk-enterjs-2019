@@ -28,7 +28,12 @@ const indexTemplate = pods => `
 
 <button
     onclick="javascript:fetch('/fix-blue-green-bug', { method: 'POST' })">
-    Update Blue-Green-Deployment to bugfree version
+    Update Blue-Green-Deployment to Bugfree Version
+</button>
+
+<button
+    onclick="javascript:fetch('/move-green-to-production', { method: 'POST' })">
+    Move Green to Production
 </button>
 
 <script type="text/javascript">

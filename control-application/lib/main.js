@@ -13,6 +13,7 @@ app.post('/default-deployment', asyncHelper(require('./routes/create-deployment.
 
 app.post('/create-blue-green-deployment', require('./routes/create-blue-green-deployment.js'));
 app.post('/fix-blue-green-bug', require('./routes/fix-blue-green-bug.js'));
+app.post('/move-green-to-production', require('./routes/move-green-to-production.js'));
 
 // Error handler
 app.use((err, req, res, next) => {
