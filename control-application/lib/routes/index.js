@@ -16,6 +16,15 @@ const indexTemplate = pods => `
     ${pods.map(pod => `<li>${pod.name}</li>`).join('\n')}
 </ol>
 
+<button
+    onclick="javascript:fetch('/default-deployment', { method: 'POST' })">
+    Deploy Application
+</button>
+
+<script type="text/javascript">
+    setInterval(() => window.location.reload(), 1000);
+</script>
+
 </html>
 `;
 
