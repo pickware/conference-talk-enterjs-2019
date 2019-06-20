@@ -26,6 +26,11 @@ const indexTemplate = pods => `
     Create Blue-Green-Deployment
 </button>
 
+<button
+    onclick="javascript:fetch('/fix-blue-green-bug', { method: 'POST' })">
+    Update Blue-Green-Deployment to bugfree version
+</button>
+
 <script type="text/javascript">
     setInterval(() => window.location.reload(), 1000);
 </script>
