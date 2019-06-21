@@ -10,6 +10,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', asyncHelper(require('./routes/index.js')));
 app.post('/default-deployment', asyncHelper(require('./routes/create-deployment.js')));
+app.delete('/deployments/:name', asyncHelper(require('./routes/delete-deployment.js')));
+app.delete('/services/:name', asyncHelper(require('./routes/delete-service.js')));
+app.delete('/ingresses/:name', asyncHelper(require('./routes/delete-ingress.js')));
 
 app.post('/create-blue-green-deployment', require('./routes/create-blue-green-deployment.js'));
 app.post('/fix-blue-green-bug', require('./routes/fix-blue-green-bug.js'));

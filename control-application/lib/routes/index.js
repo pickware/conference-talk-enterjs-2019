@@ -15,6 +15,7 @@ const ingressTemplate = ({ name, hosts }) => {
     return `
 <li>
     <strong>${name}</strong>
+    <button onclick="javascript:deleteIngress('${name}')">Delete</button>
     ${hostsPart}
 </li>`;
 };
@@ -23,14 +24,15 @@ const deploymentTemplate = ({ name, appLabel, readyReplicas, updatedReplicas, po
     const podsPart = `
 <strong>Pods:</strong>
 <ol>
-
     ${pods.map(pod => `<li><strong>${pod.status}</strong> &ndash; ${pod.name}</li>`).join('\n')}
 </ol>
 `;
 
     return `
 <li>
-    <strong>${name}</strong> (label: ${appLabel}, ready: ${readyReplicas}, updated: ${updatedReplicas})<br/>
+    <strong>${name}</strong> (label: ${appLabel}, ready: ${readyReplicas}, updated: ${updatedReplicas})
+    <button onclick="javascript:deleteDeployment('${name}')">Delete</button>
+    <br/>
     ${podsPart}
 </li>`;
 };
@@ -49,22 +51,22 @@ const indexTemplate = ({ services, ingresses, deployments }) => `
 
 <div>
     <button
-        onclick="javascript:fetch('/default-deployment', { method: 'POST' })">
+        onclick="javascript:createSimpleDeployment()">
         Deploy Application
     </button>
 
     <button
-        onclick="javascript:fetch('/create-blue-green-deployment', { method: 'POST' })">
+        onclick="javascript:createGreenBlueDeployment()">
         Create Blue-Green-Deployment
     </button>
 
     <button
-        onclick="javascript:fetch('/fix-blue-green-bug', { method: 'POST' })">
+        onclick="javascript:updateGreenBlueDeployment()">
         Update Blue-Green-Deployment to Bugfree Version
     </button>
 
     <button
-        onclick="javascript:fetch('/move-green-to-production', { method: 'POST' })">
+        onclick="javascript:moveGreenToProduction()">
         Move Green to Production
     </button>
 </div>
@@ -82,6 +84,7 @@ const indexTemplate = ({ services, ingresses, deployments }) => `
         <li>
             <strong>${service.name}</strong> 
             ${service.appLabel ? `(label: ${service.appLabel})` : ''}
+            <button onclick="javascript:deleteService('${service.name}')">Delete</button>
         </li>
     `).join('\n')}
 </ol>
@@ -93,7 +96,35 @@ const indexTemplate = ({ services, ingresses, deployments }) => `
 </ol>
 
 <script type="text/javascript">
-    setInterval(() => window.location.reload(), 5000);
+    setInterval(() => window.location.reload(), 2000);
+    
+    function deleteDeployment(name) {
+        fetch(\`/deployments/\${name}\`, { method: 'DELETE' }).then(() => window.location.reload());
+    }
+    
+    function deleteService(name) {
+        fetch(\`/services/\${name}\`, { method: 'DELETE' }).then(() => window.location.reload());
+    }
+    
+    function deleteIngress(name) {
+        fetch(\`/ingresses/\${name}\`, { method: 'DELETE' }).then(() => window.location.reload());
+    }
+    
+    function createSimpleDeployment() {
+        fetch('/default-deployment', { method: 'POST' }).then(() => window.location.reload());
+    }
+    
+    function createGreenBlueDeployment() {
+        fetch('/create-blue-green-deployment', { method: 'POST' }).then(() => window.location.reload());
+    }
+    
+    function updateGreenBlueDeployment() {
+        fetch('/fix-blue-green-bug', { method: 'POST' }).then(() => window.location.reload());
+    }
+    
+    function moveGreenToProduction() {
+        fetch('/move-green-to-production', { method: 'POST' }).then(() => window.location.reload()); 
+    }
 </script>
 
 </html>
