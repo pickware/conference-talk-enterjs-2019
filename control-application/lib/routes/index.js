@@ -69,6 +69,21 @@ const indexTemplate = ({ services, ingresses, deployments }) => `
         onclick="javascript:moveGreenToProduction()">
         Move Green to Production
     </button>
+
+    <button
+        onclick="javascript:fetch('/prepare-canary-deployment', { method: 'POST' })">
+        Prepare for canary deployment
+    </button>
+
+    <button
+        onclick="javascript:fetch('/add-canary-deployment', { method: 'POST' })">
+        Add canary deployment
+    </button>
+
+    <button
+        onclick="javascript:fetch('/scale-canary-deployment-up', { method: 'POST' })">
+        Scale canary deployment up
+    </button>
 </div>
 
 <h2>Deployments</h2>

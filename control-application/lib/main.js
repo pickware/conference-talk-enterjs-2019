@@ -18,6 +18,10 @@ app.post('/create-blue-green-deployment', require('./routes/create-blue-green-de
 app.post('/fix-blue-green-bug', require('./routes/fix-blue-green-bug.js'));
 app.post('/move-green-to-production', require('./routes/move-green-to-production.js'));
 
+app.post('/prepare-canary-deployment', require('./routes/prepare-canary-deployment.js'));
+app.post('/add-canary-deployment', require('./routes/add-canary-deployment.js'));
+app.post('/scale-canary-deployment-up', require('./routes/scale-canary-deployment-up.js'));
+
 // Error handler
 app.use((err, req, res, next) => {
     console.error('Caught error:', err);

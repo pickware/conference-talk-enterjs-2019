@@ -1,0 +1,55 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: example-application-deployment
+  labels:
+    app: example-application-app
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: example-application-pod
+  template:
+    metadata:
+      labels:
+        app: example-application-pod
+        environment: production
+    spec:
+      containers:
+        - name: js-app
+          image: example-application:v1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-application-canary-service
+spec:
+  selector:
+    environment: production
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: example-application-canary-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: example-application-canary-service
+              servicePort: 8080

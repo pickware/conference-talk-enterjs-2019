@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
 
     const k8sServiceApi = kc.makeApiClient(k8s.CoreV1Api);
     try {
-        const serviceUpdates = updatedService.map(service => k8sServiceApi.replaceNamespacedService(
+        const serviceUpdates = updatedService.map(service => k8sServiceApi.patchNamespacedService(
             service.metadata.name,
             'default',
             service,

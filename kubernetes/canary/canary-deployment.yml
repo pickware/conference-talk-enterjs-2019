@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: example-application-canary-deployment
+  labels:
+    app: example-application-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-application-canary-pod
+  template:
+    metadata:
+      labels:
+        app: example-application-canary-pod
+        environment: production
+    spec:
+      containers:
+        - name: js-app
+          image: example-application:v3
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
