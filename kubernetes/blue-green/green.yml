@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: example-application-deployment-green
@@ -26,7 +26,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-application-service-green
+  name: example-application-service-staging
 spec:
   selector:
     app: example-application-pod-green

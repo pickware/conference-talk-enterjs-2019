@@ -1,18 +1,19 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: example-application-deployment-green
+  name: example-application-canary-deployment
   labels:
-    app: example-application-app-green
+    app: example-application-app
 spec:
-  replicas: 10
+  replicas: 1
   selector:
     matchLabels:
-      app: example-application-pod-green
+      app: example-application-canary-pod
   template:
     metadata:
       labels:
-        app: example-application-pod-green
+        app: example-application-canary-pod
+        environment: production
     spec:
       containers:
         - name: js-app
