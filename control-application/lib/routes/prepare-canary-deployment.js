@@ -1,44 +1,43 @@
-const k8s = require('@kubernetes/client-node');
-const path = require('path');
-const fs = require('fs');
-const util = require('util');
-
-const readFile = util.promisify(fs.readFile);
+const {
+    Deployment,
+    DeploymentRepository,
+    Ingress,
+    IngressRepository,
+    Service,
+    ServiceRepository,
+} = require('../kubernetes');
 
 module.exports = async (req, res) => {
-    const yamlPath = path.join(__dirname, '../../../kubernetes/canary/application-v1.yml');
-    const fileContents = await readFile(yamlPath);
-    const elements = k8s.loadAllYaml(fileContents);
+    // Create deployment
+    const deployment = new Deployment(
+        'enterjs-v1-deployment',
+        { app: 'enterjs-production-pod' },
+        [{
+            name: 'js-app',
+            image: 'enterjs-app:v1',
+            ports: [8080],
+        }]
+    );
+    await DeploymentRepository.create(deployment);
 
-    const kc = new k8s.KubeConfig();
-    kc.loadFromDefault();
-    const k8sServiceApi = kc.makeApiClient(k8s.CoreV1Api);
-    const k8sDeploymentAndIngressApi = kc.makeApiClient(k8s.ExtensionsV1beta1Api);
+    // Create Service
+    const service = new Service(
+        'enterjs-production-service',
+        { app: 'enterjs-production-pod' },
+        [8080]
+    );
+    await ServiceRepository.create(service);
 
-    const k8sApiRequests = elements.forEach(async (element) => {
-        if (element.kind === 'Deployment') {
-            try {
-                return k8sDeploymentAndIngressApi.createNamespacedDeployment('default', element);
-            } catch (error) {
-                console.error(error);
-            }
-        } else if (element.kind === 'Service') {
-            try {
-                return k8sServiceApi.createNamespacedService('default', element);
-            } catch (error) {
-                console.error(error);
-            }
-        } else {
-            try {
-                return k8sDeploymentAndIngressApi.createNamespacedIngress('default', element);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        return null;
-    });
-    await Promise.all(k8sApiRequests);
+    // Create ingress
+    const ingress = new Ingress(
+        'enterjs-production-ingress',
+        [{
+            host: 'production.enterjs.test',
+            serviceName: 'enterjs-production-service',
+            port: 8080,
+        }]
+    );
+    await IngressRepository.create(ingress);
 
     res.send('');
 };

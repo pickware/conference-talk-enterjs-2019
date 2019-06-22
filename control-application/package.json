@@ -11,6 +11,6 @@
     },
     "scripts": {
         "server": "node lib/main.js",
-        "build-images": "node build/build-docker-images.js"
+        "build-images": "node ../enterjs-app/build/build-docker-images.js"
     }
 }
