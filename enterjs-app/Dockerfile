@@ -1,6 +1,6 @@
 FROM node:10
 
-WORKDIR /usr/src/example-application
+WORKDIR /usr/src/enterjs-app
 
 COPY . ./
 
@@ -14,4 +14,4 @@ ENV VERSION=$APP_VERSION
 
 EXPOSE 8080
 
-ENTRYPOINT ["node", "/usr/src/example-application/lib/main.js"]
+ENTRYPOINT ["node", "/usr/src/enterjs-app/lib/main.js"]
