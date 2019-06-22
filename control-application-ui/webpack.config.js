@@ -48,6 +48,14 @@ module.exports = {
         historyApiFallback: true,
         noInfo: true,
         overlay: true,
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8000',
+                pathRewrite: {
+                    '^/api': '',
+                },
+            },
+        },
     },
     performance: {
         hints: false,
