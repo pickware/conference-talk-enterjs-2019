@@ -1,22 +1,22 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: example-application-deployment-green
+  name: enterjs-app-deployment-green
   labels:
-    app: example-application-app-green
+    app: enterjs-app-app-green
 spec:
   replicas: 10
   selector:
     matchLabels:
-      app: example-application-pod-green
+      app: enterjs-app-pod-green
   template:
     metadata:
       labels:
-        app: example-application-pod-green
+        app: enterjs-app-pod-green
     spec:
       containers:
         - name: js-app
-          image: example-application:v2
+          image: enterjs-app:v2
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
@@ -26,10 +26,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-application-service-staging
+  name: enterjs-app-service-staging
 spec:
   selector:
-    app: example-application-pod-green
+    app: enterjs-app-pod-green
   ports:
     - protocol: TCP
       port: 8080

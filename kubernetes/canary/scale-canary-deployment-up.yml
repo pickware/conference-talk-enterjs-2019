@@ -1,23 +1,23 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: example-application-canary-deployment
+  name: enterjs-app-canary-deployment
   labels:
-    app: example-application-app
+    app: enterjs-app-app
 spec:
   replicas: 10
   selector:
     matchLabels:
-      app: example-application-canary-pod
+      app: enterjs-app-canary-pod
   template:
     metadata:
       labels:
-        app: example-application-canary-pod
+        app: enterjs-app-canary-pod
         environment: production
     spec:
       containers:
         - name: js-app
-          image: example-application:v3
+          image: enterjs-app:v3
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
@@ -27,23 +27,23 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: example-application-deployment
+  name: enterjs-app-deployment
   labels:
-    app: example-application-app
+    app: enterjs-app-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: example-application-pod
+      app: enterjs-app-pod
   template:
     metadata:
       labels:
-        app: example-application-pod
+        app: enterjs-app-pod
         environment: production
     spec:
       containers:
         - name: js-app
-          image: example-application:v1
+          image: enterjs-app:v1
           imagePullPolicy: Never
           ports:
             - containerPort: 8080

@@ -1,23 +1,23 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: example-application-deployment
+  name: enterjs-app-deployment
   labels:
-    app: example-application-app
+    app: enterjs-app-app
 spec:
   replicas: 10
   selector:
     matchLabels:
-      app: example-application-pod
+      app: enterjs-app-pod
   template:
     metadata:
       labels:
-        app: example-application-pod
+        app: enterjs-app-pod
         environment: production
     spec:
       containers:
         - name: js-app
-          image: example-application:v1
+          image: enterjs-app:v1
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
@@ -27,7 +27,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-application-canary-service
+  name: enterjs-app-canary-service
 spec:
   selector:
     environment: production
@@ -41,7 +41,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: example-application-canary-ingress
+  name: enterjs-app-canary-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -51,5 +51,5 @@ spec:
         paths:
           - path: /*
             backend:
-              serviceName: example-application-canary-service
+              serviceName: enterjs-app-canary-service
               servicePort: 8080

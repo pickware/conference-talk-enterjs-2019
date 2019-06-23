@@ -21,7 +21,7 @@ kubectl apply -f ingress.yml
 To find the IP address and port for the deployment's ingress, run:
 
 ```sh
-kubectl get ingress example-application-ingress
+kubectl get ingress enterjs-app-ingress
 ```
 
 ### Using the API:
@@ -49,7 +49,7 @@ minikube addons enable ingress
 ### Kubectl:
 
 ```sh
-kubectl scale deployment example-application-deployment --replicas 10
+kubectl scale deployment enterjs-app-deployment --replicas 10
 ```
 
 ### Using the API:
@@ -64,13 +64,13 @@ PATCH /apis/apps/v1/namespaces/{namespace}/kubernetes/{name}/scale
 Either:
 
 ```sh
-kubectl edit deployment example-application-deployment
+kubectl edit deployment enterjs-app-deployment
 ```
 
 Or
 
 ```sh
-kubectl patch deployment example-application-deployment --patch='{"spec":{"template":{"spec":{"containers":[{"name": "js-app", "iamge":"example-application:v2"}]}}}}'
+kubectl patch deployment enterjs-app-deployment --patch='{"spec":{"template":{"spec":{"containers":[{"name": "js-app", "iamge":"enterjs-app:v2"}]}}}}'
 ```
 
 Or adjust the `deployment.yml` (e.g. `deployment-updated.yml`) and
@@ -103,7 +103,7 @@ Create the new deployment and service just as described in the `How to create th
 ### Update the ingress
 
 ```sh
-kubectl patch ingress example-application-ingress --patch='{"spec":{"rules":[{"http":{"paths":[{"path": "/*", "backend":{"serviceName": "example-application-service-blue-green", "servicePort": 3000}}]}}]}}'
+kubectl patch ingress enterjs-app-ingress --patch='{"spec":{"rules":[{"http":{"paths":[{"path": "/*", "backend":{"serviceName": "enterjs-app-service-blue-green", "servicePort": 3000}}]}}]}}'
 ```
 
 PATCH /apis/networking.k8s.io/v1beta1/namespaces/{namespace}/ingresses/{name}

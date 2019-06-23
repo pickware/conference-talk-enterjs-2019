@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example-application-deployment
+  name: enterjs-app-deployment
   labels:
-    app: example-application-app
+    app: enterjs-app-app
 spec:
   selector:
     matchLabels:
-      app: example-application-pod
+      app: enterjs-app-pod
   template:
     metadata:
       labels:
-        app: example-application-pod
+        app: enterjs-app-pod
     spec:
       containers:
         - name: js-app
-          image: example-application:v2
+          image: enterjs-app:v2
           imagePullPolicy: Never
           ports:
             - containerPort: 8080

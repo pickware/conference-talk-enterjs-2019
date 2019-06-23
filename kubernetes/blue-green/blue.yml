@@ -1,22 +1,22 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: example-application-deployment-blue
+  name: enterjs-app-deployment-blue
   labels:
-    app: example-application-app-blue
+    app: enterjs-app-app-blue
 spec:
   replicas: 10
   selector:
     matchLabels:
-      app: example-application-pod-blue
+      app: enterjs-app-pod-blue
   template:
     metadata:
       labels:
-        app: example-application-pod-blue
+        app: enterjs-app-pod-blue
     spec:
       containers:
         - name: js-app
-          image: example-application:v1
+          image: enterjs-app:v1
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
@@ -26,10 +26,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-application-service-production
+  name: enterjs-app-service-production
 spec:
   selector:
-    app: example-application-pod-blue
+    app: enterjs-app-pod-blue
   ports:
     - protocol: TCP
       port: 8080

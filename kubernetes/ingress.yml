@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: example-application-ingress
+  name: enterjs-app-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -11,5 +11,5 @@ spec:
         paths:
           - path: /*
             backend:
-              serviceName: example-application-service
+              serviceName: enterjs-app-service
               servicePort: 8080

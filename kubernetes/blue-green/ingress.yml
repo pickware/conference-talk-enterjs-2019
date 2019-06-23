@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: example-application-ingress-production
+  name: enterjs-app-ingress-production
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -12,12 +12,12 @@ spec:
         paths:
           - path: /*
             backend:
-              serviceName: example-application-service-production
+              serviceName: enterjs-app-service-production
               servicePort: 8080
     - host: staging.enterjs.test
       http:
         paths:
           - path: /*
             backend:
-              serviceName: example-application-service-staging
+              serviceName: enterjs-app-service-staging
               servicePort: 8080

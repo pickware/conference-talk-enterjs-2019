@@ -2,12 +2,12 @@
 
 ## Example application
 
-The example application lives in `./example-application`.
+The example application lives in `./enterjs-app`.
 
 To run the example application:
 
 ```bash
-cd ./example-application
+cd ./enterjs-app
 yarn install
 yarn run server
 ```
@@ -15,7 +15,7 @@ yarn run server
 To build and run the example application's Docker image:
 
 ```bash
-cd ./example-application
-docker build -t example-application .
-docker run --rm -d -p 8080:8080 example-application:latest
+cd ./enterjs-app
+docker build -t enterjs-app .
+docker run --rm -d -p 8080:8080 enterjs-app:latest
 ```
