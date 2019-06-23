@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
     const servicesResponse = await k8sCoreApi.listNamespacedService('default');
     const services = servicesResponse.body.items.map(service => ({
         name: service.metadata.name,
-        appLabel: service.spec.selector && service.spec.selector.app,
+        selector: service.spec.selector,
     }));
 
     const ingressesResponse = await k8sExtensionsApi.listNamespacedIngress('default');

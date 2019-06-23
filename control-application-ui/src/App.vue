@@ -56,11 +56,12 @@
             <div class="services">
                 <h2>Services</h2>
                 <ol>
-                    <li v-for="service in dashboard.services">
-                        <strong>{{ service.name }}</strong>
-                        <span v-if="service.appLabel">(label: {{ service.appLabel }})</span>
-                        <button v-on:click="deleteService(service)">Delete</button>
-                    </li>
+                    <service
+                        v-for="service in dashboard.services"
+                        v-bind:key="service.name"
+                        v-bind:service="service"
+                    >
+                    </service>
                 </ol>
             </div>
 
@@ -84,12 +85,14 @@
 
 <script>
     import Deployment from './Deployment.vue';
+    import Service from './Service.vue';
 
     export default {
         name: 'app',
 
         components: {
             Deployment,
+            Service,
         },
 
         data() {
@@ -110,14 +113,6 @@
                 return fetch('/api/dashboard').then(response => response.json()).then((result) => {
                     this.dashboard = result;
                 });
-            },
-
-            deleteDeployment(deployment) {
-                fetch(`/api/deployments/${deployment.name}`, { method: 'DELETE' });
-            },
-
-            deleteService(service) {
-                fetch(`/api/services/${service.name}`, { method: 'DELETE' });
             },
 
             deleteIngress(ingress) {

@@ -17,6 +17,7 @@ app.post(
     asyncHelper(require('./routes/update-deployment-image.js'))
 );
 app.delete('/services/:name', asyncHelper(require('./routes/delete-service.js')));
+app.post('/services/:name/selector/:selector', asyncHelper(require('./routes/update-service-selector.js')));
 app.delete('/ingresses/:name', asyncHelper(require('./routes/delete-ingress.js')));
 
 app.post('/create-blue-green-deployment', require('./routes/create-blue-green-deployment.js'));
