@@ -16,16 +16,6 @@
             </button>
 
             <button
-                v-on:click="updateGreenBlueDeployment">
-                Update Blue-Green-Deployment to Bugfree Version
-            </button>
-
-            <button
-                v-on:click="moveGreenToProduction">
-                Move Green to Production
-            </button>
-
-            <button
                 v-on:click="fetch('/prepare-canary-deployment', { method: 'POST' })">
                 Prepare for canary deployment
             </button>
@@ -33,11 +23,6 @@
             <button
                 v-on:click="fetch('/add-canary-deployment', { method: 'POST' })">
                 Add canary deployment
-            </button>
-
-            <button
-                v-on:click="fetch('/scale-canary-deployment-up', { method: 'POST' })">
-                Scale canary deployment up
             </button>
         </div>
 
@@ -125,14 +110,6 @@
 
             createGreenBlueDeployment() {
                 fetch('/api/create-blue-green-deployment', { method: 'POST' });
-            },
-
-            updateGreenBlueDeployment() {
-                fetch('/api/fix-blue-green-bug', { method: 'POST' });
-            },
-
-            moveGreenToProduction() {
-                fetch('/api/move-green-to-production', { method: 'POST' });
             },
         }
     };
