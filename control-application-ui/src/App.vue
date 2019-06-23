@@ -45,23 +45,11 @@
             <div class="deployments">
                 <h2>Deployments</h2>
                 <ol>
-                    <li v-for="deployment in dashboard.deployments">
-                        <strong>{{ deployment.name }}</strong>
-                        (label: {{ deployment.appLabel }},
-                        ready: {{ deployment.readyReplicas }},
-                        updated: {{ deployment.updatedReplicas }})
-                        <button v-on:click="deleteDeployment(deployment)">Delete</button>
-                        <br/>
-                        <strong>Pods:</strong>
-                        <ol>
-                            <li v-for="pod in deployment.pods">
-                                <strong>{{ pod.status }}</strong>
-                                &ndash;
-                                {{ pod.name }}
-                            </li>
-
-                        </ol>
-                    </li>
+                    <deployment
+                        v-for="deployment in dashboard.deployments"
+                        v-bind:key="deployment.name"
+                        v-bind:deployment="deployment"
+                    ></deployment>
                 </ol>
             </div>
 
@@ -95,8 +83,14 @@
 </template>
 
 <script>
+    import Deployment from './Deployment.vue';
+
     export default {
         name: 'app',
+
+        components: {
+            Deployment,
+        },
 
         data() {
             return {

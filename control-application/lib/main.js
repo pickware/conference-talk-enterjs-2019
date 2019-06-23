@@ -11,11 +11,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/dashboard', asyncHelper(require('./routes/dashboard.js')));
 app.post('/default-deployment', asyncHelper(require('./routes/create-deployment.js')));
 app.delete('/deployments/:name', asyncHelper(require('./routes/delete-deployment.js')));
+app.post('/deployments/:name/scale/:scale', asyncHelper(require('./routes/scale-deployment.js')));
 app.delete('/services/:name', asyncHelper(require('./routes/delete-service.js')));
 app.delete('/ingresses/:name', asyncHelper(require('./routes/delete-ingress.js')));
 
 app.post('/create-blue-green-deployment', require('./routes/create-blue-green-deployment.js'));
-app.post('/fix-blue-green-bug', require('./routes/fix-blue-green-bug.js'));
 app.post('/move-green-to-production', require('./routes/move-green-to-production.js'));
 
 app.post('/prepare-canary-deployment', require('./routes/prepare-canary-deployment.js'));
