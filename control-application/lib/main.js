@@ -12,6 +12,10 @@ app.get('/dashboard', asyncHelper(require('./routes/dashboard.js')));
 app.post('/default-deployment', asyncHelper(require('./routes/create-deployment.js')));
 app.delete('/deployments/:name', asyncHelper(require('./routes/delete-deployment.js')));
 app.post('/deployments/:name/scale/:scale', asyncHelper(require('./routes/scale-deployment.js')));
+app.post(
+    '/deployments/:name/container/:container/image/:image',
+    asyncHelper(require('./routes/update-deployment-image.js'))
+);
 app.delete('/services/:name', asyncHelper(require('./routes/delete-service.js')));
 app.delete('/ingresses/:name', asyncHelper(require('./routes/delete-ingress.js')));
 

@@ -11,6 +11,17 @@
         <button v-on:click="scaleDeployment()">Update</button>
         <br/>
         <br/>
+        <strong>Containers:</strong>
+        <ol>
+            <deployment-container
+                v-for="container in deployment.containers"
+                v-bind:key="container.name"
+                v-bind:container="container"
+                v-bind:deploymentName="deployment.name"
+            >
+            </deployment-container>
+        </ol>
+        <br/>
         <strong>Pods:</strong>
         <ol>
             <li v-for="pod in deployment.pods">
@@ -24,8 +35,14 @@
 </template>
 
 <script>
+    import DeploymentContainer from './DeploymentContainer.vue';
+
     export default {
         name: 'Deployment',
+
+        components: {
+            DeploymentContainer,
+        },
 
         props: ['deployment'],
         data() {

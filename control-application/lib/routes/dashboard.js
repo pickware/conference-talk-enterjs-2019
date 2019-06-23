@@ -9,19 +9,27 @@ module.exports = async (req, res) => {
 
     const podListResponse = await k8sCoreApi.listNamespacedPod('default');
 
-    const pods = podListResponse.body.items.map(pod => ({
-        name: pod.metadata.name,
-        status: pod.status.phase,
-        label: pod.metadata.labels.app,
-    }));
+    const pods = podListResponse.body.items.map((pod) => {
+        // The pod status isn't what it claims to be.
+        // https://github.com/kubernetes/kubernetes/issues/22839
+        pod.status.phase = pod.metadata.deletionTimestamp !== undefined ? 'Terminating' : pod.status.phase;
+
+        return {
+            name: pod.metadata.name,
+            status: pod.status.phase,
+            label: pod.metadata.labels.app,
+        };
+    });
 
     const deploymentsResponse = await k8sExtensionsApi.listNamespacedDeployment('default');
     const deployments = deploymentsResponse.body.items.map(deployment => ({
-        name: deployment.metadata.name,
-        readyReplicas: deployment.status.readyReplicas,
-        updatedReplicas: deployment.status.updatedReplicas,
         appLabel: deployment.metadata.labels.app,
+        containers: deployment.spec.template.spec.containers,
+        name: deployment.metadata.name,
         pods: pods.filter(pod => pod.label === deployment.spec.selector.matchLabels.app),
+        readyReplicas: deployment.status.readyReplicas,
+        scale: deployment.spec.replicas,
+        updatedReplicas: deployment.status.updatedReplicas,
     }));
 
     const servicesResponse = await k8sCoreApi.listNamespacedService('default');
