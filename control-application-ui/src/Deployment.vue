@@ -2,7 +2,7 @@
     <li>
         Deployment
         <strong>{{ deployment.name }}</strong>
-        (label: {{ deployment.appLabel }},
+        (template labels: {{ templateLabels }},
         ready: {{ deployment.readyReplicas }},
         updated: {{ deployment.updatedReplicas }})
         <button v-on:click="deleteDeployment(deployment)">Delete</button>
@@ -29,8 +29,8 @@
                 &ndash;
                 {{ pod.name }}
             </li>
-
         </ol>
+        <br/>
     </li>
 </template>
 
@@ -49,6 +49,14 @@
             return {
                 scale: null,
             };
+        },
+
+        computed: {
+            templateLabels: function () {
+                const keys = Object.keys(this.deployment.templateLabels);
+
+                return keys.map(labelKey => `${labelKey}=${this.deployment.templateLabels[labelKey]}`).join(' ');
+            },
         },
 
         methods: {

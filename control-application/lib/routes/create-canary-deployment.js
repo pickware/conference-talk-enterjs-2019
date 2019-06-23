@@ -8,10 +8,10 @@ const {
 } = require('../kubernetes');
 
 module.exports = async (req, res) => {
-    const productionDeployment = new Deployment(
-        'enterjs-production-deployment',
+    const v1Deployment = new Deployment(
+        'enterjs-v1-deployment',
         {
-            app: 'enterjs-production-pod', update: 'canary',
+            app: 'enterjs-v1-pod', use: 'canary',
         },
         [{
             name: 'js-app',
@@ -19,18 +19,18 @@ module.exports = async (req, res) => {
             ports: [8080],
         }]
     );
-    await DeploymentRepository.create(productionDeployment);
-    const productionService = new Service(
-        'enterjs-production-service',
-        { app: 'enterjs-production-pod' },
+    await DeploymentRepository.create(v1Deployment);
+    const service = new Service(
+        'enterjs-v1-service',
+        { app: 'enterjs-v1-pod' },
         [8080]
     );
-    await ServiceRepository.create(productionService);
+    await ServiceRepository.create(service);
 
-    const stagingDeployment = new Deployment(
-        'enterjs-staging-deployment',
+    const newDeployment = new Deployment(
+        'enterjs-new-deployment',
         {
-            app: 'enterjs-staging-pod', update: 'canary',
+            app: 'enterjs-new-pod', use: 'canary',
         },
         [{
             name: 'js-app',
@@ -38,23 +38,13 @@ module.exports = async (req, res) => {
             ports: [8080],
         }]
     );
-    await DeploymentRepository.create(stagingDeployment);
-    const stagingService = new Service(
-        'enterjs-staging-service',
-        { app: 'enterjs-staging-pod' },
-        [8080]
-    );
-    await ServiceRepository.create(stagingService);
+    await DeploymentRepository.create(newDeployment);
 
     const ingress = new Ingress(
-        'enterjs-production-ingress',
+        'enterjs-v1-ingress',
         [{
             host: 'production.enterjs.test',
-            serviceName: 'enterjs-production-service',
-            port: 8080,
-        }, {
-            host: 'staging.enterjs.test',
-            serviceName: 'enterjs-staging-service',
+            serviceName: 'enterjs-v1-service',
             port: 8080,
         }]
     );

@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
 
     const deploymentsResponse = await k8sExtensionsApi.listNamespacedDeployment('default');
     const deployments = deploymentsResponse.body.items.map(deployment => ({
-        appLabel: deployment.metadata.labels.app,
+        templateLabels: deployment.spec.template.metadata.labels,
         containers: deployment.spec.template.spec.containers,
         name: deployment.metadata.name,
         pods: pods.filter(pod => pod.label === deployment.spec.selector.matchLabels.app),
