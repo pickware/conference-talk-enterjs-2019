@@ -28,6 +28,11 @@
                 <strong>{{ pod.status }}</strong>
                 &ndash;
                 {{ pod.name }}
+                (Errors:
+                <span
+                    class="error-count"
+                    v-bind:class="{ 'has-errors': pod.numErrors > 0 }">
+                    {{ pod.numErrors }}</span>)
             </li>
         </ol>
         <br/>
@@ -72,4 +77,12 @@
 </script>
 
 <style>
+    .error-count {
+        font-weight: bold;
+        color: green;
+    }
+
+    .has-errors {
+        color: red;
+    }
 </style>

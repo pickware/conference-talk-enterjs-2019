@@ -9,17 +9,24 @@ module.exports = async (req, res) => {
 
     const podListResponse = await k8sCoreApi.listNamespacedPod('default');
 
-    const pods = podListResponse.body.items.map((pod) => {
+    const pods = await Promise.all(podListResponse.body.items.map(async (pod) => {
         // The pod status isn't what it claims to be.
         // https://github.com/kubernetes/kubernetes/issues/22839
         pod.status.phase = pod.metadata.deletionTimestamp !== undefined ? 'Terminating' : pod.status.phase;
+
+        const logsResponse = await k8sCoreApi.readNamespacedPodLog(pod.metadata.name, 'default', 'js-app');
+
+        const logLines = logsResponse.body.split('\n');
+        const numErrors = logLines.filter(line => line.toLowerCase().includes('error')).length;
 
         return {
             name: pod.metadata.name,
             status: pod.status.phase,
             label: pod.metadata.labels.app,
+            logLines,
+            numErrors,
         };
-    });
+    }));
 
     const deploymentsResponse = await k8sExtensionsApi.listNamespacedDeployment('default');
     const deployments = deploymentsResponse.body.items.map(deployment => ({
