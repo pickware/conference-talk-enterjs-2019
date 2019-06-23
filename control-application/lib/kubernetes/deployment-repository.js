@@ -21,4 +21,27 @@ module.exports = {
             },
         }
     ),
+    updateImage: async (deploymentName, containerName, image) => apiClient.patchNamespacedDeployment(
+        deploymentName,
+        namespace,
+        {
+            spec: {
+                template: {
+                    spec: {
+                        containers: [{
+                            name: containerName,
+                            image,
+                        }],
+                    },
+                },
+            },
+        },
+        undefined,
+        undefined,
+        {
+            headers: {
+                'Content-Type': 'application/strategic-merge-patch+json',
+            },
+        }
+    ),
 };
