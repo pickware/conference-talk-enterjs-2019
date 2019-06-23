@@ -1,6 +1,12 @@
+const process = require('process');
 const adjectiveAnimal = require('adjective-animal');
 const express = require('express');
 const bodyParser = require('body-parser');
+
+process.on('SIGTERM', () => {
+    console.info('SIGTERM signal received.');
+    process.exit(0);
+});
 
 const app = express();
 const port = 8080;
