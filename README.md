@@ -1,5 +1,13 @@
 # EnterJS 2019 talk - JavaScript DevOps: Orchestrate Kubernetes deployments using NodeJS
 
+## Setup
+
+This project uses yarn workspaces, so as a first step you should install all dependencies from the root folder:
+
+```bash
+yarn install
+```
+
 ## Example application
 
 The example application lives in `./enterjs-app`.
@@ -8,7 +16,6 @@ To run the example application:
 
 ```bash
 cd ./enterjs-app
-yarn install
 yarn run server
 ```
 

@@ -1,5 +1,5 @@
 {
-    "name": "enterjs-2019",
+    "name": "@pickware/conference-talk-enterjs-2019",
     "version": "1.0.0",
     "description": "JavaScript DevOps: Orchestrate Kubernetes deployments using NodeJS",
     "main": "index.js",
@@ -13,6 +13,12 @@
     },
     "author": "Jannik Jochem <jannik.jochem@pickware.de>, Niklas Buechner <niklas.buechner@pickware.de>",
     "license": "MIT",
+    "private": true,
+    "workspaces":[
+        "control-application",
+        "control-application-ui",
+        "enterjs-app"
+    ],
     "husky": {
         "hooks": {
             "pre-commit": "yarn run eslint"
