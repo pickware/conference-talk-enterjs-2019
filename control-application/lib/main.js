@@ -8,7 +8,7 @@ const port = 8000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', asyncHelper(require('./routes/index.js')));
+app.get('/dashboard', asyncHelper(require('./routes/dashboard.js')));
 app.post('/default-deployment', asyncHelper(require('./routes/create-deployment.js')));
 app.delete('/deployments/:name', asyncHelper(require('./routes/delete-deployment.js')));
 app.delete('/services/:name', asyncHelper(require('./routes/delete-service.js')));
