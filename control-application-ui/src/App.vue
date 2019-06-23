@@ -16,28 +16,8 @@
             </button>
 
             <button
-                v-on:click="updateGreenBlueDeployment">
-                Update Blue-Green-Deployment to Bugfree Version
-            </button>
-
-            <button
-                v-on:click="moveGreenToProduction">
-                Move Green to Production
-            </button>
-
-            <button
-                v-on:click="fetch('/prepare-canary-deployment', { method: 'POST' })">
-                Prepare for canary deployment
-            </button>
-
-            <button
-                v-on:click="fetch('/add-canary-deployment', { method: 'POST' })">
-                Add canary deployment
-            </button>
-
-            <button
-                v-on:click="fetch('/scale-canary-deployment-up', { method: 'POST' })">
-                Scale canary deployment up
+                v-on:click="createCanaryDeployment">
+                Create canary deployment
             </button>
         </div>
 
@@ -45,34 +25,23 @@
             <div class="deployments">
                 <h2>Deployments</h2>
                 <ol>
-                    <li v-for="deployment in dashboard.deployments">
-                        <strong>{{ deployment.name }}</strong>
-                        (label: {{ deployment.appLabel }},
-                        ready: {{ deployment.readyReplicas }},
-                        updated: {{ deployment.updatedReplicas }})
-                        <button v-on:click="deleteDeployment(deployment)">Delete</button>
-                        <br/>
-                        <strong>Pods:</strong>
-                        <ol>
-                            <li v-for="pod in deployment.pods">
-                                <strong>{{ pod.status }}</strong>
-                                &ndash;
-                                {{ pod.name }}
-                            </li>
-
-                        </ol>
-                    </li>
+                    <deployment
+                        v-for="deployment in dashboard.deployments"
+                        v-bind:key="deployment.name"
+                        v-bind:deployment="deployment"
+                    ></deployment>
                 </ol>
             </div>
 
             <div class="services">
                 <h2>Services</h2>
                 <ol>
-                    <li v-for="service in dashboard.services">
-                        <strong>{{ service.name }}</strong>
-                        <span v-if="service.appLabel">(label: {{ service.appLabel }})</span>
-                        <button v-on:click="deleteService(service)">Delete</button>
-                    </li>
+                    <service
+                        v-for="service in dashboard.services"
+                        v-bind:key="service.name"
+                        v-bind:service="service"
+                    >
+                    </service>
                 </ol>
             </div>
 
@@ -95,8 +64,16 @@
 </template>
 
 <script>
+    import Deployment from './Deployment.vue';
+    import Service from './Service.vue';
+
     export default {
         name: 'app',
+
+        components: {
+            Deployment,
+            Service,
+        },
 
         data() {
             return {
@@ -118,14 +95,6 @@
                 });
             },
 
-            deleteDeployment(deployment) {
-                fetch(`/api/deployments/${deployment.name}`, { method: 'DELETE' });
-            },
-
-            deleteService(service) {
-                fetch(`/api/services/${service.name}`, { method: 'DELETE' });
-            },
-
             deleteIngress(ingress) {
                 fetch(`/api/ingresses/${ingress.name}`, { method: 'DELETE' });
             },
@@ -138,12 +107,8 @@
                 fetch('/api/create-blue-green-deployment', { method: 'POST' });
             },
 
-            updateGreenBlueDeployment() {
-                fetch('/api/fix-blue-green-bug', { method: 'POST' });
-            },
-
-            moveGreenToProduction() {
-                fetch('/api/move-green-to-production', { method: 'POST' });
+            createCanaryDeployment() {
+                fetch('/api/create-canary-deployment', { method: 'POST' });
             },
         }
     };

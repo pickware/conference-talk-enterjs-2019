@@ -1,28 +1,43 @@
-const fs = require('fs');
-const path = require('path');
-const util = require('util');
-const k8s = require('@kubernetes/client-node');
-
-const readFile = util.promisify(fs.readFile);
+const {
+    Deployment,
+    DeploymentRepository,
+    Ingress,
+    IngressRepository,
+    Service,
+    ServiceRepository,
+} = require('../kubernetes');
 
 module.exports = async (req, res) => {
-    const kc = new k8s.KubeConfig();
-    kc.loadFromDefault();
-
-    const k8sExtensionsApi = kc.makeApiClient(k8s.ExtensionsV1beta1Api);
-    const k8sCoreApi = kc.makeApiClient(k8s.CoreV1Api);
-
     // Create deployment
-    const deployment = k8s.loadYaml(await readFile(path.join(__dirname, '../../../kubernetes/deployment.yml')));
-    await k8sExtensionsApi.createNamespacedDeployment('default', deployment);
+    const deployment = new Deployment(
+        'enterjs-deployment',
+        { app: 'enterjs-pod' },
+        [{
+            name: 'js-app',
+            image: 'enterjs-app:v1',
+            ports: [8080],
+        }]
+    );
+    await DeploymentRepository.create(deployment);
 
     // Create Service
-    const service = k8s.loadYaml(await readFile(path.join(__dirname, '../../../kubernetes/service.yml')));
-    await k8sCoreApi.createNamespacedService('default', service);
+    const service = new Service(
+        'enterjs-service',
+        { app: 'enterjs-pod' },
+        [8080]
+    );
+    await ServiceRepository.create(service);
 
     // Create ingress
-    const ingress = k8s.loadYaml(await readFile(path.join(__dirname, '../../../kubernetes/ingress.yml')));
-    await k8sExtensionsApi.createNamespacedIngress('default', ingress);
+    const ingress = new Ingress(
+        'enterjs-ingress',
+        [{
+            host: 'production.enterjs.test',
+            serviceName: 'enterjs-service',
+            port: 8080,
+        }]
+    );
+    await IngressRepository.create(ingress);
 
     res.send('');
 };

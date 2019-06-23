@@ -1,65 +1,66 @@
-const k8s = require('@kubernetes/client-node');
-const path = require('path');
-const fs = require('fs');
-const util = require('util');
-
-const readFile = util.promisify(fs.readFile);
-
-const deployApplication = async (yamlPath) => {
-    const fileContents = await readFile(yamlPath);
-    const elements = k8s.loadAllYaml(fileContents);
-
-    let deployment;
-    let service;
-    elements.forEach((element) => {
-        if (element.kind === 'Deployment') {
-            deployment = element;
-        } else {
-            service = element;
-        }
-    });
-
-    const kc = new k8s.KubeConfig();
-    kc.loadFromDefault();
-    const k8sServiceApi = kc.makeApiClient(k8s.CoreV1Api);
-    const k8sDeploymentApi = kc.makeApiClient(k8s.ExtensionsV1beta1Api);
-
-    try {
-        await k8sServiceApi.createNamespacedService('default', service);
-    } catch (error) {
-        console.error(error);
-    }
-
-    try {
-        await k8sDeploymentApi.createNamespacedDeployment('default', deployment);
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-const deployIngress = async (yamlPath) => {
-    const fileContents = await readFile(yamlPath);
-    const ingress = k8s.loadYaml(fileContents);
-
-    const kc = new k8s.KubeConfig();
-    kc.loadFromDefault();
-    const k8sIngressApi = kc.makeApiClient(k8s.ExtensionsV1beta1Api);
-    try {
-        await k8sIngressApi.createNamespacedIngress('default', ingress);
-    } catch (error) {
-        console.log(error);
-    }
-};
+const {
+    Deployment,
+    DeploymentRepository,
+    Ingress,
+    IngressRepository,
+    Service,
+    ServiceRepository,
+} = require('../kubernetes');
 
 module.exports = async (req, res) => {
-    const greenYamlPath = path.join(__dirname, '../../../kubernetes/blue-green/green.yml');
-    await deployApplication(greenYamlPath);
+    const promises = [];
 
-    const blueYamlPath = path.join(__dirname, '../../../kubernetes/blue-green/blue.yml');
-    await deployApplication(blueYamlPath);
+    // Create deployments
+    const blueDeployment = new Deployment(
+        'enterjs-blue-deployment',
+        { app: 'enterjs-blue-pod' },
+        [{
+            name: 'js-app',
+            image: 'enterjs-app:v1',
+            ports: [8080],
+        }]
+    );
+    const greenDeployment = new Deployment(
+        'enterjs-green-deployment',
+        { app: 'enterjs-green-pod' },
+        [{
+            name: 'js-app',
+            image: 'enterjs-app:v1',
+            ports: [8080],
+        }]
+    );
+    promises.push(DeploymentRepository.create(blueDeployment));
+    promises.push(DeploymentRepository.create(greenDeployment));
 
-    const ingressYamlPath = path.join(__dirname, '../../../kubernetes/blue-green/ingress.yml');
-    await deployIngress(ingressYamlPath);
+    // Create Service
+    const productionService = new Service(
+        'enterjs-production-service',
+        { app: 'enterjs-blue-pod' },
+        [8080]
+    );
+    const stagingService = new Service(
+        'enterjs-staging-service',
+        { app: 'enterjs-green-pod' },
+        [8080]
+    );
+    promises.push(ServiceRepository.create(productionService));
+    promises.push(ServiceRepository.create(stagingService));
 
+    // Create ingress
+    const ingress = new Ingress(
+        'enterjs-blue-green-ingress',
+        [{
+            host: 'production.enterjs.test',
+            serviceName: 'enterjs-production-service',
+            port: 8080,
+        }, {
+            host: 'staging.enterjs.test',
+            serviceName: 'enterjs-staging-service',
+            port: 8080,
+        }]
+    );
+    promises.push(IngressRepository.create(ingress));
+
+    await Promise.all(promises);
     res.send('');
 };

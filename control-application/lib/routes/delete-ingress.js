@@ -1,11 +1,7 @@
-const k8s = require('@kubernetes/client-node');
+const IngressRepository = require('../kubernetes').IngressRepository;
 
 module.exports = async (req, res) => {
-    const kc = new k8s.KubeConfig();
-    kc.loadFromDefault();
-    const k8sExtensionsApi = kc.makeApiClient(k8s.ExtensionsV1beta1Api);
-
-    await k8sExtensionsApi.deleteNamespacedIngress(req.params.name, 'default');
+    await IngressRepository.delete(req.params.name);
 
     res.send('');
 };
