@@ -12,8 +12,7 @@ app.get('/dashboard', asyncHelper(require('./routes/dashboard.js')));
 
 app.post('/default-deployment', asyncHelper(require('./routes/create-deployment.js')));
 app.post('/create-blue-green-deployment', require('./routes/create-blue-green-deployment.js'));
-app.post('/prepare-canary-deployment', require('./routes/prepare-canary-deployment.js'));
-app.post('/add-canary-deployment', require('./routes/add-canary-deployment.js'));
+app.post('/create-canary-deployment', require('./routes/create-canary-deployment.js'));
 
 app.delete('/deployments/:name', asyncHelper(require('./routes/delete-deployment.js')));
 app.post('/deployments/:name/scale/:scale', asyncHelper(require('./routes/scale-deployment.js')));

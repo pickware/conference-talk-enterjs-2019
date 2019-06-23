@@ -16,13 +16,8 @@
             </button>
 
             <button
-                v-on:click="fetch('/prepare-canary-deployment', { method: 'POST' })">
-                Prepare for canary deployment
-            </button>
-
-            <button
-                v-on:click="fetch('/add-canary-deployment', { method: 'POST' })">
-                Add canary deployment
+                v-on:click="createCanaryDeployment">
+                Create canary deployment
             </button>
         </div>
 
@@ -110,6 +105,10 @@
 
             createGreenBlueDeployment() {
                 fetch('/api/create-blue-green-deployment', { method: 'POST' });
+            },
+
+            createCanaryDeployment() {
+                fetch('/api/create-canary-deployment', { method: 'POST' });
             },
         }
     };
