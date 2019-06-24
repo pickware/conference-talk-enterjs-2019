@@ -24,6 +24,7 @@ class Deployment {
                 labels: this.deploymentLabels,
             },
             spec: {
+                replicas: this.replicaCount,
                 selector: {
                     matchLabels: this.selectorLabels,
                 },

@@ -19,6 +19,7 @@ module.exports = async (req, res) => {
             ports: [8080],
         }]
     );
+    v1Deployment.replicaCount = 10;
     await DeploymentRepository.create(v1Deployment);
     const service = new Service(
         'enterjs-v1-service',
