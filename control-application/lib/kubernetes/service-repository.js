@@ -3,9 +3,13 @@ const apiClient = require('./api-clients').coreV1Api;
 const namespace = 'default';
 
 module.exports = {
-    create: async service => apiClient.createNamespacedService(namespace, service.getSpec()),
-    delete: async serviceName => apiClient.deleteNamespacedService(serviceName, namespace),
-    updateSelector: async (serviceName, selector) => {
+    async create(service) {
+        return apiClient.createNamespacedService(namespace, service.getSpec());
+    },
+    async delete(serviceName) {
+        return apiClient.deleteNamespacedService(serviceName, namespace);
+    },
+    async updateSelector(serviceName, selector) {
         const getServiceResponse = await apiClient.readNamespacedService(serviceName, namespace);
         const service = getServiceResponse.body;
         service.spec.selector = selector;

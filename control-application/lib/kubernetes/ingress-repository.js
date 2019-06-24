@@ -3,6 +3,10 @@ const apiClient = require('./api-clients').extensionsV1beta1Api;
 const namespace = 'default';
 
 module.exports = {
-    create: async ingress => apiClient.createNamespacedIngress(namespace, ingress.getSpec()),
-    delete: async ingressName => apiClient.deleteNamespacedIngress(ingressName, namespace),
+    async create(ingress) {
+        return apiClient.createNamespacedIngress(namespace, ingress.getSpec());
+    },
+    async delete(ingressName) {
+        return apiClient.deleteNamespacedIngress(ingressName, namespace);
+    },
 };

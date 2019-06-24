@@ -3,47 +3,55 @@ const apiClient = require('./api-clients').extensionsV1beta1Api;
 const namespace = 'default';
 
 module.exports = {
-    create: async deployment => apiClient.createNamespacedDeployment(namespace, deployment.getSpec()),
-    delete: async deploymentName => apiClient.deleteNamespacedDeployment(deploymentName, namespace, undefined, {
-        propagationPolicy: 'Background',
-    }),
-    scale: async (deploymentName, scale) => apiClient.patchNamespacedDeployment(
-        deploymentName,
-        namespace,
-        {
-            spec: {
-                replicas: scale,
+    async create(deployment) {
+        return apiClient.createNamespacedDeployment(namespace, deployment.getSpec());
+    },
+    async delete(deploymentName) {
+        return apiClient.deleteNamespacedDeployment(deploymentName, namespace, undefined, {
+            propagationPolicy: 'Background',
+        });
+    },
+    async scale(deploymentName, scale) {
+        return apiClient.patchNamespacedDeployment(
+            deploymentName,
+            namespace,
+            {
+                spec: {
+                    replicas: scale,
+                },
             },
-        },
-        undefined,
-        undefined,
-        {
-            headers: {
-                'Content-Type': 'application/strategic-merge-patch+json',
-            },
-        }
-    ),
-    updateImage: async (deploymentName, containerName, image) => apiClient.patchNamespacedDeployment(
-        deploymentName,
-        namespace,
-        {
-            spec: {
-                template: {
-                    spec: {
-                        containers: [{
-                            name: containerName,
-                            image,
-                        }],
+            undefined,
+            undefined,
+            {
+                headers: {
+                    'Content-Type': 'application/strategic-merge-patch+json',
+                },
+            }
+        );
+    },
+    async updateImage(deploymentName, containerName, image) {
+        return apiClient.patchNamespacedDeployment(
+            deploymentName,
+            namespace,
+            {
+                spec: {
+                    template: {
+                        spec: {
+                            containers: [{
+                                name: containerName,
+                                image,
+                            }],
+                        },
                     },
                 },
             },
-        },
-        undefined,
-        undefined,
-        {
-            headers: {
-                'Content-Type': 'application/strategic-merge-patch+json',
-            },
-        }
-    ),
+            undefined,
+            undefined,
+            {
+                headers: {
+                    'Content-Type': 'application/strategic-merge-patch+json',
+                },
+            }
+        );
+    },
 };
