@@ -5,7 +5,11 @@ module.exports = async (req, res) => {
     const selector = {};
     selector[selectorPieces[0]] = selectorPieces[1];
 
-    ServiceRepository.updateSelector(req.params.name, selector);
+    try {
+        await ServiceRepository.updateSelector(req.params.name, selector);
+    } catch (error) {
+        console.log(error);
+    }
 
     res.send('');
 };
