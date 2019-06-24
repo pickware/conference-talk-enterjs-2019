@@ -18,22 +18,16 @@
                 v-bind:key="container.name"
                 v-bind:container="container"
                 v-bind:deploymentName="deployment.name"
-            >
-            </deployment-container>
+            ></deployment-container>
         </ol>
         <br/>
         <strong>Pods:</strong>
         <ol>
-            <li v-for="pod in deployment.pods">
-                <strong>{{ pod.status }}</strong>
-                &ndash;
-                {{ pod.name }}
-                (Errors:
-                <span
-                    class="error-count"
-                    v-bind:class="{ 'has-errors': pod.numErrors > 0 }">
-                    {{ pod.numErrors }}</span>)
-            </li>
+            <pod
+                v-for="pod in deployment.pods"
+                v-bind:key="pod.name"
+                v-bind:pod="pod"
+            ></pod>
         </ol>
         <br/>
     </li>
@@ -41,12 +35,14 @@
 
 <script>
     import DeploymentContainer from './DeploymentContainer.vue';
+    import Pod from './Pod.vue';
 
     export default {
         name: 'Deployment',
 
         components: {
             DeploymentContainer,
+            Pod,
         },
 
         props: ['deployment'],
