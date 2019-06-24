@@ -4,7 +4,9 @@ const namespace = 'default';
 
 module.exports = {
     create: async deployment => apiClient.createNamespacedDeployment(namespace, deployment.getSpec()),
-    delete: async deploymentName => apiClient.deleteNamespacedDeployment(deploymentName, namespace),
+    delete: async deploymentName => apiClient.deleteNamespacedDeployment(deploymentName, namespace, undefined, {
+        propagationPolicy: 'Background',
+    }),
     scale: async (deploymentName, scale) => apiClient.patchNamespacedDeployment(
         deploymentName,
         namespace,
