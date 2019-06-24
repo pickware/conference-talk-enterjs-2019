@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 process.on('SIGTERM', () => {
     console.info('SIGTERM signal received.');
-    process.exit(0);
+    setTimeout(() => process.exit(0), 5000);
 });
 
 const app = express();
