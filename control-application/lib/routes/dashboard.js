@@ -14,9 +14,11 @@ module.exports = async (req, res) => {
         // https://github.com/kubernetes/kubernetes/issues/22839
         pod.status.phase = pod.metadata.deletionTimestamp !== undefined ? 'Terminating' : pod.status.phase;
 
-        const logsResponse = await k8sCoreApi.readNamespacedPodLog(pod.metadata.name, 'default', 'js-app');
-
-        const logLines = logsResponse.body.split('\n');
+        let logLines = [];
+        if (pod.status.phase === 'Running') {
+            const logsResponse = await k8sCoreApi.readNamespacedPodLog(pod.metadata.name, 'default', 'js-app');
+            logLines = logsResponse.body ? logsResponse.body.split('\n') : [];
+        }
         const numErrors = logLines.filter(line => line.toLowerCase().includes('error')).length;
 
         return {
