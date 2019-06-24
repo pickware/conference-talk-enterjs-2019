@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
     const v1Deployment = new Deployment(
         'enterjs-v1-deployment',
         {
-            app: 'enterjs-v1-pod', use: 'canary',
+            app: 'enterjs-v1-pod', environment: 'production',
         },
         [{
             name: 'js-app',
@@ -28,9 +28,9 @@ module.exports = async (req, res) => {
     await ServiceRepository.create(service);
 
     const newDeployment = new Deployment(
-        'enterjs-new-deployment',
+        'enterjs-canary-deployment',
         {
-            app: 'enterjs-new-pod', use: 'canary',
+            app: 'enterjs-canary-pod', environment: 'production',
         },
         [{
             name: 'js-app',
