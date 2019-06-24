@@ -44,7 +44,9 @@ const indexTemplate = name => `
 
 app.get('/', (req, res) => res.send(indexTemplate()));
 
-// eslint-disable-next-line no-undef
-app.post('/', (req, res) => res.send(indexTemplte(req.body.name)));
+app.post('/', () => {
+    // eslint-disable-next-line no-throw-literal
+    throw 'Expected a different name';
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
