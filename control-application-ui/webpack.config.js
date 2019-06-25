@@ -56,6 +56,7 @@ module.exports = {
                 },
             },
         },
+        port: 9000,
     },
     performance: {
         hints: false,
