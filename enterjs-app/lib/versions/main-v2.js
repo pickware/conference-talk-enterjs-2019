@@ -18,27 +18,45 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const indexTemplate = name => `
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>${serverName}</title>
+    <link 
+        rel="stylesheet" 
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" asfsadf
+        crossorigin="anonymous">
+    <style type="text/css" media="screen">
+        body {
+            min-height: 100vh;
+            font-size: 125%;    
+        }
+        
+        .jumbotron {
+            background-color: #8cc3ff;
+        }
+    </style>
 </head>
-
-<h1>
-    ${name ? `Hello ${name}!` : 'Hello World!'}
-</h1>
-
-<form method="post">
-    <label>
-        What's your name?
-        <input type="text" name="name"/>
-    </label>
-    <input type="submit"/>
-</form>
-
-<p>
-    Server <em>${serverName}</em> running version <em>${version}</em>.
-</p>
-
+<body class="d-flex flex-column justify-content-center">
+    <div class="container-fluid d-flex flex-column">
+        <div class="jumbotron text-center py-5">
+            <h1 class="display-1">${name ? `Hello ${name}!` : 'Hello World!'}</h1>
+        
+            <form class="pt-4 w-25 mx-auto" method="post">
+                <div class="form-group">
+                    <label for="nameInput">What's your name?</label>
+                    <input type="text" class="form-control" name="name" id="nameInput"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    <p class="text-muted text-center w-100">
+        Server
+        <span class="text-primary">${serverName}</span> 
+        running version
+        <span class="text-success">${version}</span>.
+    </p>
+</body>
 </html>
 `;
 

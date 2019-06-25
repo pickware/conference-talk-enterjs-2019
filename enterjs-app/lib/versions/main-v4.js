@@ -30,6 +30,10 @@ const indexTemplate = name => `
             min-height: 100vh;
             font-size: 125%;    
         }
+        
+        .jumbotron {
+            background-color: #8cc3ff;
+        }
     </style>
 </head>
 <body class="d-flex flex-column justify-content-center">
