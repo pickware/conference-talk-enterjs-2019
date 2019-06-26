@@ -2,7 +2,7 @@
     <div class="ingress card p-2">
         <div class="d-flex align-items-end justify-items-between mb-2">
             <h5>{{ ingress.name }}</h5>
-            <button class="ml-3 btn btn-danger" v-on:click="deleteIngress(service)">Delete</button>
+            <button class="ml-3 btn btn-danger" v-on:click="deleteIngress(ingress)">Delete</button>
         </div>
 
         <ul>

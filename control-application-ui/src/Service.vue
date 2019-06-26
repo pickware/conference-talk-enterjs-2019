@@ -37,13 +37,13 @@
         props: ['service'],
         data() {
             return {
-                newSelector: computeSelector(this.service)
+                newSelector: computeSelector(this.service) || ''
             };
         },
 
         computed: {
             selector: function () {
-                computeSelector(this.service);
+                return computeSelector(this.service);
             },
         },
 
