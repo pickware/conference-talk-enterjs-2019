@@ -23,6 +23,10 @@
 
 <script>
     function computeSelector(service) {
+        if (!service.selector) {
+            return '';
+        }
+
         const keys = Object.keys(service.selector);
 
         let selector = '';
@@ -37,7 +41,7 @@
         props: ['service'],
         data() {
             return {
-                newSelector: computeSelector(this.service) || ''
+                newSelector: computeSelector(this.service)
             };
         },
 
