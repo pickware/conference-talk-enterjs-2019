@@ -28,7 +28,7 @@ const indexTemplate = name => `
     <style type="text/css" media="screen">
         body {
             min-height: 100vh;
-            font-size: 125%;    
+            font-size: 200%;
         }
         
         .jumbotron {
