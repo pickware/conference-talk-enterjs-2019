@@ -1,63 +1,52 @@
 <template>
-    <div id="app">
-        <h1>
-            Kubernetes control application
-        </h1>
+    <div id="app" class="container-fluid d-flex flex-column">
+        <div class="p-4 text-center">
+            <h1 class="text-center">
+                Kubernetes control application
+            </h1>
+        </div>
 
-        <div role="toolbar">
+        <div role="toolbar" class="px-4">
             <button
+                class="btn btn-light"
                 v-on:click="createSimpleDeployment">
                 Deploy Application
             </button>
 
             <button
+                class="btn btn-light"
                 v-on:click="createGreenBlueDeployment">
                 Create Blue-Green-Deployment
             </button>
 
             <button
+                class="btn btn-light"
                 v-on:click="createCanaryDeployment">
                 Create canary deployment
             </button>
         </div>
 
-        <div class="dashboard">
+
+        <div class="dashboard p-4">
             <div class="deployments">
-                <h2>Deployments</h2>
-                <ol>
-                    <deployment
-                        v-for="deployment in dashboard.deployments"
-                        v-bind:key="deployment.name"
-                        v-bind:deployment="deployment"
-                    ></deployment>
-                </ol>
+                <deployment
+                    v-for="deployment in dashboard.deployments"
+                    v-bind:key="deployment.name"
+                    v-bind:deployment="deployment"/>
             </div>
 
-            <div class="services">
-                <h2>Services</h2>
-                <ol>
-                    <service
-                        v-for="service in dashboard.services"
-                        v-bind:key="service.name"
-                        v-bind:service="service"
-                    >
-                    </service>
-                </ol>
+            <div class="services d-flex mb-3">
+                <service
+                    v-for="service in dashboard.services"
+                    v-bind:key="service.name"
+                    v-bind:service="service"/>
             </div>
 
-            <div class="ingresses">
-                <h2>Ingresses</h2>
-                <ol>
-                    <li v-for="ingress in dashboard.ingresses">
-                        <strong>{{ ingress.name }}</strong>
-                        <button v-on:click="deleteIngress(ingress)">Delete</button>
-                        <ul>
-                            <li v-for="host in ingress.hosts">
-                                <a :href="`http://${host}/`" target="_blank">http://{{ host }}/</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ol>
+            <div class="ingresses d-flex">
+                <ingress
+                    v-for="ingress in dashboard.ingresses"
+                    v-bind:key="ingress.name"
+                    v-bind:ingress="ingress"/>
             </div>
         </div>
     </div>
@@ -66,6 +55,7 @@
 <script>
     import Deployment from './Deployment.vue';
     import Service from './Service.vue';
+    import Ingress from './Ingress.vue';
 
     export default {
         name: 'app',
@@ -73,11 +63,11 @@
         components: {
             Deployment,
             Service,
+            Ingress,
         },
 
         data() {
             return {
-                msg: 'Welcome to Your Vue.js App',
                 dashboard: {},
             };
         },
@@ -93,10 +83,6 @@
                 return fetch('/api/dashboard').then(response => response.json()).then((result) => {
                     this.dashboard = result;
                 });
-            },
-
-            deleteIngress(ingress) {
-                fetch(`/api/ingresses/${ingress.name}`, { method: 'DELETE' });
             },
 
             createSimpleDeployment() {
@@ -115,19 +101,6 @@
 </script>
 
 <style>
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        color: #2c3e50;
-        margin-top: 60px;
-    }
-
-    h1, h2 {
-        font-weight: normal;
-    }
-
-    a {
-        color: #42b983;
+    .deployments,.services,.ingresses {
     }
 </style>
